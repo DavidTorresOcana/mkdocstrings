@@ -317,8 +317,8 @@ def test(ctx, cleancov: bool = True, match: str = ""):
         ctx.run("rm -f .coverage", silent=True)
 
     try:
-        import sphinx  # isort:skip
-        import docutils  # isort:skip
+        import sphinx  # isort:skip  # noqa: F401
+        import docutils  # isort:skip  # noqa: F401
     except ImportError:
         ctx.run("pip install sphinx docutils --no-deps", title="Installing additional test dependencies")
 

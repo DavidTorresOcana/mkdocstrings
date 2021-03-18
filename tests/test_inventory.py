@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from mkdocstrings.inventory import get_inventory
+from mkdocstrings.inventory import Inventory, InventoryItem
 
 try:
     from sphinx.util.inventory import InventoryFile
@@ -19,17 +19,17 @@ MKDOCSTRINGS_OBJECTS_INV = Path("site/objects.inv")
 # https://github.com/bskinn/sphobjinv/blob/260a96cd4eaa7d5cdd8e12f03ae7376243841fa6/conftest.py#L163-L177
 @pytest.mark.skipif(InventoryFile is None, reason="Sphinx is not installed")
 @pytest.mark.parametrize(
-    "anchors_urls",
+    "inventory",
     [
-        {},
-        {"object_path": "page_url"},
-        {"object_path": "page_url#object_path"},
-        {"object_path": "page_url#other_anchor"},
+        Inventory(),
+        Inventory([InventoryItem(name="object_path", domain="py", role="obj", uri="page_url")]),
+        Inventory([InventoryItem(name="object_path", domain="py", role="obj", uri="page_url#object_path")]),
+        Inventory([InventoryItem(name="object_path", domain="py", role="obj", uri="page_url#other_anchor")]),
     ],
 )
-def test_sphinx_load_inventory_file(anchors_urls):
+def test_sphinx_load_inventory_file(inventory):
     """Perform the 'live' inventory load test."""
-    buffer = BytesIO(get_inventory(anchors_urls))
+    buffer = BytesIO(inventory.format_sphinx())
     InventoryFile.load(buffer, "", join)
 
 
