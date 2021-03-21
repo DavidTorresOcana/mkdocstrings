@@ -130,13 +130,12 @@ class AutoDocProcessor(BlockProcessor):
                 anchor = heading.attrib["id"]
                 self._autorefs.register_anchor(page, anchor)
 
-                try:
-                    role = heading.attrib["data-role"]
-                except KeyError:
-                    pass  # without a role, it's not an object's heading
-                else:
+                if "data-role" in heading.attrib:
                     self._handlers.inventory.register(
-                        name=anchor, domain=handler.domain, role=role, uri=f"{page}#{anchor}"
+                        name=anchor,
+                        domain=handler.domain,
+                        role=heading.attrib["data-role"],
+                        uri=f"{page}#{anchor}",
                     )
 
             parent.append(el)

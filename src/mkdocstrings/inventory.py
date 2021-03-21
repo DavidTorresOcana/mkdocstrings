@@ -78,7 +78,7 @@ class Inventory(dict):
         item = InventoryItem(*args, **kwargs)
         self[item.name] = item
 
-    def format_sphinx(self, compress=True) -> bytes:
+    def format_sphinx(self, compress: bool = True) -> bytes:
         """Format this inventory as a Sphinx `objects.inv` file.
 
         Arguments:
